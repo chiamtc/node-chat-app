@@ -2,7 +2,7 @@ const path = require('path');
 const http = require('http');
 const express = require('express');
 const socketIO = require('socket.io');
-
+const {generateMessage} = require('./utils/message');
 const publicPath = path.join(__dirname, '../public');
 const port = process.env.PORT || 3000;
 var app = express();
@@ -19,17 +19,11 @@ io.on('connection', (socket) => {
             createdAt: 'today'
         });*/
 
-    socket.emit('newMessage', {
-        from: 'Admin',
-        text: 'Welcome to the chat app',
-        createdAt: new Date().getTime()
-    });
+    //emitting an event to everyone on the socket/connection
+    socket.emit('newMessage', generateMessage('Admin', 'Welcome to chat app'));
 
-    socket.broadcast.emit('newMessage', {
-        from: 'Admin',
-        text: 'New user joined',
-        createdAt: new Date().getTime()
-    })
+    //broadcast to everyone in the s
+    socket.broadcast.emit('newMessage', generateMessage('Admin', 'New user joined'));
 
     /*socket.on('createEmail',(newEmail)=>{
         console.log('createEmail - ' ,newEmail);
@@ -39,14 +33,10 @@ io.on('connection', (socket) => {
     socket.on('createMessage', (message) => {
         console.log('createMessage', message);
 
-        //io.emit() sends message to every connection whereas socket.on only emits to the connection only
-        io.emit('newMessage', {
-            from: message.from,
-            text: message.text,
-            createdAt: new Date().getTime()
-        })
+        //io.emit() sends message to every single connection whereas socket.on only emits to the connection only
+        io.emit('newMessage', generateMessage(message.from, message.text));
 
-        //socket.broadcast = everytime socket.XXXX meaning the connection will have changes only - not everyone
+        //socket.broadcast.emit() will send message to everyone but this socket, hence, the definition of broadcast
         /* socket.broadcast.emit('newMessage',{
              from :message.from,
              text:message.text,
