@@ -1,13 +1,13 @@
 var socket = io();
 socket.on('connect', function () {
     console.log('connected to server')
-/*
-    socket.emit('createEmail',{
-        to:'jen@example.com',
-        text:'hey random emial',
-        createdAt: 'today'
-    });
-*/
+    /*
+        socket.emit('createEmail',{
+            to:'jen@example.com',
+            text:'hey random emial',
+            createdAt: 'today'
+        });
+    */
 
 
 });
@@ -16,8 +16,15 @@ socket.on('disconnect', function () {
     console.log('disconnected from server');
 });
 
-socket.on('newMessage',function(newMessage){
+socket.on('newMessage', function (newMessage) {
     console.log(newMessage)
+});
+
+socket.emit('createMessage', {
+    from: 'Frank',
+    text: 'hi'
+}, function(res){
+    console.log(res)
 });
 
 /*
