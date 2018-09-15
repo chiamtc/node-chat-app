@@ -47,12 +47,13 @@ socket.on('newEmail', function(obj){
 
 jQuery('#message-form').on('submit', function (e) {
     e.preventDefault();
+    var messageTextbox =  jQuery('[name=message]');
 
     socket.emit('createMessage', {
         from: 'Frank',
-        text: jQuery('[name=message]').val()
-    }, function (res) {
-        console.log(res)
+        text: messageTextbox.val()
+    }, function () {
+        messageTextbox.val('');
     });
 });
 
@@ -62,11 +63,13 @@ locationButton.on('click', () => {
         return alert('Geolocation is not supported by your browser');
     }
 
+    locationButton.attr('disabled','disabled');
     navigator.geolocation.getCurrentPosition((position) => {
         socket.emit('createLocationMessage',{
             latitude:position.coords.latitude,
             longitude:position.coords.longitude
-        })
+        });
+        locationButton.removeAttr('disabled');
     }, (err) => {
         alert(err)
     })

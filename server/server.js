@@ -35,7 +35,7 @@ io.on('connection', (socket) => {
 
         //io.emit() sends message to every single connection whereas socket.on only emits to the connection only
         io.emit('newMessage', generateMessage(message.from, message.text));
-        callback('This is from the server.');
+        callback();
         //socket.broadcast.emit() will send message to everyone but this socket, hence, the definition of broadcast
         /* socket.broadcast.emit('newMessage',{
              from :message.from,
