@@ -13,33 +13,45 @@ var io = socketIO(server);
 io.on('connection', (socket) => {
     console.log('new user connected');
     //server to client
-/*    socket.emit('newEmail', {
-        from: 'mike@example.com',
-        text: 'some random text',
-        createdAt: 'today'
-    });*/
+    /*    socket.emit('newEmail', {
+            from: 'mike@example.com',
+            text: 'some random text',
+            createdAt: 'today'
+        });*/
 
-/*
-    socket.emit('newMessage',{
-        from:'Jen',
-        text:'from server',
-        createdAt:'today'
+    socket.emit('newMessage', {
+        from: 'Admin',
+        text: 'Welcome to the chat app',
+        createdAt: new Date().getTime()
+    });
+
+    socket.broadcast.emit('newMessage', {
+        from: 'Admin',
+        text: 'New user joined',
+        createdAt: new Date().getTime()
     })
-*/
 
     /*socket.on('createEmail',(newEmail)=>{
         console.log('createEmail - ' ,newEmail);
     });*/
 
     //client to server
-    socket.on('createMessage', (message)=>{
+    socket.on('createMessage', (message) => {
         console.log('createMessage', message);
-        //io.emit() broadcasts to every connection whereas socket.on only emits to the connection only
-        io.emit('newMessage',{
-            from :message.from,
-            text:message.text,
+
+        //io.emit() sends message to every connection whereas socket.on only emits to the connection only
+        io.emit('newMessage', {
+            from: message.from,
+            text: message.text,
             createdAt: new Date().getTime()
         })
+
+        //socket.broadcast = everytime socket.XXXX meaning the connection will have changes only - not everyone
+        /* socket.broadcast.emit('newMessage',{
+             from :message.from,
+             text:message.text,
+             createdAt: new Date().getTime()
+         })*/
     });
 
     socket.on('disconnect', () => {

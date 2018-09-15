@@ -18,7 +18,7 @@ socket.on('disconnect', function () {
 
 socket.on('newMessage',function(newMessage){
     console.log(newMessage)
-})
+});
 
 /*
 socket.on('newEmail', function(obj){
