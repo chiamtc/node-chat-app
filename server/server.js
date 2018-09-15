@@ -19,11 +19,13 @@ io.on('connection', (socket) => {
         createdAt: 'today'
     });*/
 
+/*
     socket.emit('newMessage',{
         from:'Jen',
         text:'from server',
         createdAt:'today'
     })
+*/
 
     /*socket.on('createEmail',(newEmail)=>{
         console.log('createEmail - ' ,newEmail);
@@ -32,6 +34,12 @@ io.on('connection', (socket) => {
     //client to server
     socket.on('createMessage', (message)=>{
         console.log('createMessage', message);
+        //io.emit() broadcasts to every connection whereas socket.on only emits to the connection only
+        io.emit('newMessage',{
+            from :message.from,
+            text:message.text,
+            createdAt: new Date().getTime()
+        })
     });
 
     socket.on('disconnect', () => {
