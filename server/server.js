@@ -12,8 +12,29 @@ var io = socketIO(server);
 //in this example, we're listneing to connection event - when a new user conencts
 io.on('connection', (socket) => {
     console.log('new user connected');
+    //server to client
+/*    socket.emit('newEmail', {
+        from: 'mike@example.com',
+        text: 'some random text',
+        createdAt: 'today'
+    });*/
 
-    socket.on('disconnect', ()=>{
+    socket.emit('newMessage',{
+        from:'Jen',
+        text:'from server',
+        createdAt:'today'
+    })
+
+    /*socket.on('createEmail',(newEmail)=>{
+        console.log('createEmail - ' ,newEmail);
+    });*/
+
+    //client to server
+    socket.on('createMessage', (message)=>{
+        console.log('createMessage', message);
+    });
+
+    socket.on('disconnect', () => {
         console.log('user was disconnected')
     });
 });
