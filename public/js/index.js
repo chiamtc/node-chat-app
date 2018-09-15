@@ -18,17 +18,31 @@ socket.on('disconnect', function () {
 
 socket.on('newMessage', function (newMessage) {
     console.log(newMessage)
+    var li = jQuery('<li></li>');
+    li.text(`${newMessage.from} - ${newMessage.text}`);
+    jQuery('#messages').append(li);
 });
 
-socket.emit('createMessage', {
+/*socket.emit('createMessage', {
     from: 'Frank',
     text: 'hi'
 }, function(res){
     console.log(res)
-});
+});*/
 
 /*
 socket.on('newEmail', function(obj){
     console.log(obj);
     console.log('new email')
 });*/
+
+jQuery('#message-form').on('submit', function(e){
+    e.preventDefault();
+
+    socket.emit('createMessage', {
+        from: 'Frank',
+        text: jQuery('[name=message]').val()
+    }, function(res){
+        console.log(res)
+    });
+});
